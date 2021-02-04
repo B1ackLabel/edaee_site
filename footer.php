@@ -9,8 +9,10 @@
       <input class="form-input" type="text" name="email" value="">
       <label for="password">Пароль:</label>
       <input class="form-input" type="password" name="password" value="">
-      <button class="btn form-btn" name="auth">Войти</button>
-      <a href="/reg.php"><button class="btn form-btn" type="button">Зарегестрироваться</button></a>
+      <button class="btn form-btn" type="submits" name="auth">Войти</button>
+      <?if (!strpos($_SERVER["REQUEST_URI"], "reg")): ?>
+        <a href="/reg.php"><button class="btn form-btn" type="button">Зарегестрироваться</button></a>
+      <?endif;?>
     </form>
   </div>
 </div>
