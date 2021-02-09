@@ -1,26 +1,33 @@
 <?php
-require_once "db/classuser.php";
+require_once "db/usertable.php";
+require_once "db/upload.php";
 
 
 if (isset($_POST["reg"]) && !empty($_POST) ) {
-  $user = new User(
+  $UserTable = new UserTable(
     $_POST["nick"],
-    $_POST["pwd"],
-    $_POST["pwd2"],
+    'qwertyuiop',//$_POST["pwd"],
+    'qwertyuiop',//$_POST["pwd2"],
     $_POST["email"],
     $_POST["name"],
     $_POST["sex"],
-    $_POST["birthday"],
-    $_FILES["avatar"]
+    $_POST["birthday"]
   );
+  $msg = $UserTable->checkAllFilds();
 
-  $msg = $user->checkAllFilds();
-  //print_r($msg);
+  if (isset($_FILES['avatar']) && !empty($_FILES['avatar']))
+  {
+    $upload = new UpLoad($_FILES["avatar"]);
+    $msg[] = $upload->checkFile(500, 'image');
+  }
 
   if (!empty($msg))
   {
-    $ms = $user->addUser();
+    $UserTable->setAvatar($upload->getPath());
+    $ms = $UserTable->add();
     print_r($ms);
   }
+  print_r($_POST);
+  echo $avatar;
 }
 ?>

@@ -19,12 +19,14 @@ class Connect
 
     $sendQuery = $this->pdo->prepare($prepare);
     //array_values(
-    $sendQuery->execute($values);
-  //$this->pdo = null;
-    return  $sendQuery->fetchAll(PDO::FETCH_ASSOC);
+    $request = $sendQuery->execute($values);
+    //$this->pdo = null;
+    if (gettype($request) == 'array') {
+      return  $sendQuery->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+      return $request;
+    }
   }
 }
-
-$cns = new Connect();
 
 ?>

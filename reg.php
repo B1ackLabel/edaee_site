@@ -20,7 +20,7 @@ require_once "registration.php";
   </span>
   <span>Поля помеченые звездой обязательны!</span>
   <span style="color: red"><?php print_r($_POST);?></span>
-  <form class="form" enctype="multipart/form-data" action="registration.php" method="post">
+  <form class="form" enctype="multipart/form-data" action="reg.php" method="post">
     <label for="nick">Ник на сайте (от 3 до 15 символов. Латинские буквы. - _ символы)*:</label>
     <input class="form-input block" type="text" name="nick" value="<?=$_POST["nick"]?>">
     <label for="password">Пароль (от 8 до 25 символов, кроме >< и пробела)*:</label>

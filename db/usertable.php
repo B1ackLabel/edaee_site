@@ -11,31 +11,24 @@ require_once "connect.php";
 //   	avatar
 // 	reg_date
 
-class User
+class UserTable
 {
-  private $nick;
-  private $pwd;
-  private $pwd2;
-  private $email;
-  private $name;
-  private $sex;
-  private $birthday;
-  private $avatar;
+  public $nick;
+  public $pwd;
+  public $pwd2;
+  public $email;
+  public $name;
+  public $sex;
+  public $birthday;
+  public $avatar;
   private $reg_date;
 
-  function __construct($nick, $pwd, $pwd2, $email, $name, $sex, $birthday, $avatar){
-    $this->nick = $nick;
-    $this->pwd = $pwd;
-    $this->pwd2 = $pwd2;
-    $this->email = $email;
-    $this->name = $name;
-    $this->sex = $sex;
-    $this->birthday = $birthday;
-    $this->avatar = $avatar;
+  function __construct()
+  {
     $this->reg_date = date("Y-m-d H-m-s", time());
   }
 
-  function checkAllFilds()
+  function checkAllFilds() //проверяем поля на обязательные условия
   {
     unset($errors);
     $errors[] = !preg_match("/^([\S\w_.\-]){2,15}[a-zA-Z0-9]$/", $this->nick) ? "Введите ник соответсвующий символам A-Z a-z, цифрам, символам -_ и точке." : null;
@@ -43,32 +36,36 @@ class User
     $errors[] = $this->pwd != $this->pwd2 ? "Пароли не совпадают!" : null;
     $errors[] = !preg_match("/^(([a-z0-9_-]+\.)*[a-z0-9_-]){2,}+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/", $this->email) ? "Почта введена не корректно!": null;
     $errors[] = !preg_match("/^([\S]){0,20}$/", $this->name) ? "Запрещены знаки >< или длина имени превышена." : null;
-  //  $errors[] = !preg_match("/^([\S]){0,20}$/", $this->name) ? "Запрещены знаки >< или длина имени превышена." : null;
     return $errors;
   }
+  function setAvatar($path)
+  {
+    $this->avatar = $path;
+  }
 
-  function addUser() //добавление пользователя
+  function add() //добавление пользователя
   {
     //"INSERT INTO `users` (`nick`, `password`, `email`, `name`, `sex`, `birthday`, `avatar`, `reg_date`) VALUES (?, ?, ?, ?, ?)"
     // (NULL, 'admin', MD5('admin'), '1alexandreev1@gmail.com', 'Alexandr', '1', '1995-02-14', NULL, '2021-02-05 15:25:52');
     $connect = new Connect();
     $request = $connect->execute("INSERT INTO `users` (`nick`, `password`, `email`, `name`, `sex`, `birthday`, `avatar`, `reg_date`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
     [
-      null,//$this->nick,
+      $this->nick,
       md5($this->pwd),
       $this->email,
       $this->name,
       $this->sex,
       $this->birthday,
-      null, //исправить на загруженный аватар
+      $this->avatar,
       $this->reg_date
     ]);
 
     return $request;
   }
 
-  function auth() {
-    //авторизация
+  function getUser($value = '0')
+  {
+    //получаем пользователя одного или много в зависимости от переданной переменной
   }
 
 
